@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oumayma Bouyahia — Engineer Student</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#C8A96E;--gold2:#E8D5A3;--gold3:#8a6c3a;
+  --bg:#05050A;--bg2:#0A0A12;--bg3:#0F0F1A;
+  --text:#EDE8DF;--muted:rgba(237,232,223,0.55);
+  --border:rgba(200,169,110,0.12);--borderf:rgba(200,169,110,0.3);
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:300;overflow-x:hidden;font-size:17px;line-height:1.8;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--gold3);}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.4rem 5rem;display:flex;align-items:center;justify-content:space-between;}
+nav::after{content:'';position:absolute;inset:0;background:rgba(5,5,10,0.65);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);z-index:-1;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--gold);font-style:italic;letter-spacing:0.03em;}
+.nav-links{display:flex;gap:2.8rem;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.8rem;letter-spacing:0.18em;text-transform:uppercase;transition:color 0.3s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-btn{font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:0.6rem 1.6rem;border-radius:2px;text-decoration:none;transition:background 0.3s;}
+.nav-btn:hover{background:var(--gold2);}
+
+/* ═══════════════ HERO ═══════════════ */
+.hero{height:100vh;position:relative;display:flex;align-items:center;overflow:hidden;}
+
+/* 3D canvas */
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;}
+
+/* Radial vignette */
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 70% 50%,transparent 0%,rgba(5,5,10,0.6) 60%,rgba(5,5,10,0.97) 100%);z-index:2;pointer-events:none;}
+/* Left fade */
+.hero::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,5,10,0.98) 0%,rgba(5,5,10,0.7) 45%,transparent 75%);z-index:2;pointer-events:none;}
+
+.hero-wrapper{position:relative;z-index:3;width:100%;padding:0 5rem;display:grid;grid-template-columns:1fr auto;gap:5rem;align-items:center;}
+
+.hero-content{max-width:680px;}
+
+.hero-badge{display:inline-flex;align-items:center;gap:0.6rem;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border);padding:0.5rem 1.1rem;border-radius:20px;background:rgba(200,169,110,0.06);margin-top:3.6rem;margin-bottom:2.2rem;opacity:0;animation:fadeUp 0.9s 0.2s forwards;}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:glow 2s infinite;}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(200,169,110,0.5);}50%{box-shadow:0 0 0 5px rgba(200,169,110,0);}}
+
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(4rem,8vw,9rem);font-weight:300;line-height:0.92;letter-spacing:-0.01em;margin-bottom:0.6rem;opacity:0;animation:fadeUp 0.9s 0.4s forwards;}
+.hero-name em{font-style:italic;color:var(--gold);}
+.hero-name .ghost{-webkit-text-stroke:1px rgba(200,169,110,0.25);color:transparent;display:block;font-size:clamp(1.3rem,2vw,2.3rem);line-height:1;letter-spacing:0.06em;white-space:nowrap;margin-top:0.7rem;}
+
+.hero-role{font-size:clamp(1rem,1.5vw,1.25rem);color:var(--muted);letter-spacing:0.06em;margin-bottom:2rem;opacity:0;animation:fadeUp 0.9s 0.6s forwards;font-weight:400;}
+.hero-role span{color:var(--gold);}
+
+.hero-desc{font-size:1rem;color:var(--muted);line-height:2;max-width:500px;margin-bottom:2.8rem;opacity:0;animation:fadeUp 0.9s 0.75s forwards;}
+
+.hero-actions{display:flex;gap:1rem;opacity:0;animation:fadeUp 0.9s 0.9s forwards;}
+.btn-gold{display:inline-flex;align-items:center;gap:0.6rem;background:var(--gold);color:var(--bg);padding:0.95rem 2.2rem;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;border-radius:2px;font-weight:500;transition:all 0.3s;}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);}
+.btn-ghost{display:inline-flex;align-items:center;gap:0.6rem;border:1px solid var(--borderf);color:var(--text);padding:0.95rem 2.2rem;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:all 0.3s;background:rgba(200,169,110,0.04);backdrop-filter:blur(8px);}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
+
+/* Hero Image à droite */
+.hero-image{opacity:0;animation:fadeUp 0.9s 1s forwards;}
+.hero-image img{width:380px;height:480px;object-fit:cover;border-radius:12px;border:2px solid var(--borderf);box-shadow:0 20px 60px rgba(0,0,0,0.5);transition:all 0.4s;}
+.hero-image img:hover{transform:translateY(-8px);border-color:var(--gold);box-shadow:0 30px 80px rgba(200,169,110,0.3);}
+
+/* floating stats */
+.hero-stats{position:absolute;bottom:3.5rem;right:5rem;z-index:3;display:flex;gap:2.5rem;opacity:0;animation:fadeUp 0.9s 1.1s forwards;}
+.hstat{text-align:center;}
+.hstat-n{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:var(--gold);line-height:1;display:block;}
+.hstat-l{font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);display:block;margin-top:0.3rem;}
+
+/* scroll indicator */
+.scroll-hint{position:absolute;bottom:3rem;left:5rem;z-index:3;display:flex;align-items:center;gap:0.8rem;opacity:0;animation:fadeIn 1s 1.4s forwards;}
+.scroll-hint span{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);}
+.scroll-bar{width:40px;height:1px;background:var(--border);position:relative;overflow:hidden;}
+.scroll-bar::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--gold);animation:scrollSlide 2s ease 1.6s infinite;}
+@keyframes scrollSlide{0%{left:-100%;}100%{left:100%;}}
+
+/* ═══════════════ MARQUEE ═══════════════ */
+.marquee-strip{position:relative;z-index:10;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1rem 0;overflow:hidden;}
+.marquee-inner{display:flex;white-space:nowrap;animation:scroll 25s linear infinite;}
+.mi{font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:0 1.8rem;}
+.mi b{color:var(--gold);font-weight:400;margin-right:1.5rem;}
+@keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ═══════════════ SECTIONS ═══════════════ */
+section{position:relative;z-index:10;padding:8rem 5rem;}
+.fade-in{opacity:0;transform:translateY(35px);transition:opacity 0.85s ease,transform 0.85s ease;}
+.fade-in.show{opacity:1;transform:none;}
+
+.lbl{font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:0.7rem;}
+.lbl::before{content:'';width:28px;height:1px;background:var(--gold);flex-shrink:0;}
+.sec-h{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,4.5vw,5.2rem);font-weight:300;line-height:1.05;margin-bottom:3.5rem;}
+.sec-h em{font-style:italic;color:var(--gold);}
+
+/* ABOUT */
+.about-g{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,0.88fr);gap:clamp(2.5rem,4vw,5rem);align-items:start;}
+.about-p{color:var(--muted);font-size:1.05rem;line-height:2.1;margin-bottom:1.4rem;}
+.skills-wrap{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:0.15rem;}
+.skill-group{min-height:92px;padding:1.3rem 1.5rem;border:1px solid var(--border);background:rgba(200,169,110,0.03);backdrop-filter:blur(8px);display:flex;flex-direction:column;justify-content:center;}
+.skill-group h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;color:var(--gold);margin-bottom:0.5rem;letter-spacing:0.02em;}
+.skill-group p{font-size:0.92rem;line-height:1.65;color:var(--text);opacity:0.88;}
+
+/* PROJECTS */
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.pc{background:var(--bg);padding:2.5rem;position:relative;overflow:hidden;transition:background 0.4s;}
+.pc::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transform-origin:left;transition:transform 0.5s;}
+.pc:hover{background:var(--bg3);}
+.pc:hover::after{transform:scaleX(1);}
+.pc-n{font-family:'Cormorant Garamond',serif;font-size:3.5rem;color:rgba(200,169,110,0.06);position:absolute;top:1rem;right:1.5rem;line-height:1;font-weight:300;}
+.pc-cat{font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold3);margin-bottom:0.9rem;}
+.pc-title{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;margin-bottom:0.8rem;line-height:1.3;}
+.pc-desc{font-size:0.9rem;color:var(--muted);line-height:1.85;margin-bottom:1.3rem;}
+.pc-tags{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1.2rem;}
+.tg{font-size:0.65rem;padding:0.3rem 0.7rem;border:1px solid var(--border);color:var(--muted);letter-spacing:0.06em;}
+.pc-a{font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold3);text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;transition:all 0.3s;}
+.pc-a:hover{color:var(--gold);gap:0.8rem;}
+
+/* EXPERIENCE */
+.exp-list{max-width:760px;}
+.ei{display:grid;grid-template-columns:150px 1fr;gap:4rem;padding:2.8rem 0;border-bottom:1px solid var(--border);}
+.ei:first-child{border-top:1px solid var(--border);}
+.ei-yr{font-size:0.8rem;color:var(--gold3);letter-spacing:0.1em;padding-top:0.25rem;}
+.ei-role{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;margin-bottom:0.35rem;}
+.ei-co{font-size:0.8rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.7rem;}
+.ei-desc{font-size:0.92rem;color:var(--muted);line-height:1.95;}
+
+/* CONTACT */
+.ct-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center;}
+.ct-h{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5vw,5.5rem);font-weight:300;line-height:1.05;margin-bottom:1.5rem;}
+.ct-h em{font-style:italic;color:var(--gold);}
+.ct-sub{font-size:1rem;color:var(--muted);line-height:2;margin-bottom:2rem;}
+.avail-tag{display:inline-flex;align-items:center;gap:0.6rem;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border);padding:0.5rem 1.2rem;border-radius:20px;background:rgba(200,169,110,0.05);margin-bottom:1.8rem;}
+.avail-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse2 2s infinite;}
+@keyframes pulse2{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.ct-links{display:flex;flex-direction:column;}
+.cl{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 0;border-bottom:1px solid var(--border);text-decoration:none;color:var(--text);transition:all 0.3s;}
+.cl:first-child{border-top:1px solid var(--border);}
+.cl:hover{padding-left:0.8rem;color:var(--gold);}
+.cl-lbl{font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:0.2rem;}
+.cl-val{font-size:1rem;}
+.cl-arr{color:var(--muted);transition:all 0.3s;font-size:1rem;}
+.cl:hover .cl-arr{color:var(--gold);transform:translate(3px,-3px);}
+
+/* FOOTER */
+footer{padding:2rem 5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:relative;z-index:10;}
+.ft-logo{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,1.4vw,1.2rem);font-style:italic;color:var(--gold);white-space:nowrap;letter-spacing:0.03em;line-height:1;}
+.ft-copy{font-size:0.75rem;color:var(--muted);letter-spacing:0.08em;}
+
+.divl{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);position:relative;z-index:10;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;} .nav-links,.nav-btn{display:none;}
+  .hero-wrapper{grid-template-columns:1fr;gap:2rem;padding:0 1.5rem;}
+  .hero-image{order:-1;}
+  .hero-image img{width:100%;max-width:350px;height:400px;margin:0 auto;display:block;}
+  .hero-stats{right:1.5rem;bottom:2rem;gap:1.5rem;} .scroll-hint{left:1.5rem;}
+  section{padding:5rem 1.5rem;}
+  .about-g,.ct-wrap{grid-template-columns:1fr;gap:3rem;}
+  .proj-grid{grid-template-columns:1fr;}
+  .ei{grid-template-columns:1fr;gap:0.5rem;}
+  footer{padding:1.5rem;flex-direction:column;gap:0.5rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Oumayma Bouyahia.</div>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#experience">Expérience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-btn">Me contacter</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="hero-canvas"></canvas>
+
+  <div class="hero-wrapper">
+    <div class="hero-content">
+      <div class="hero-badge"><span class="badge-dot"></span>Disponible · Freelance · Emploi à temps plein</div>
+      <h1 class="hero-name">
+        Oumayma<br>
+        <em>Bouyahia</em><br>
+        <span class="ghost">Software Developer & AI Enthusiast.</span>
+      </h1>
+      <p class="hero-role">IoT · Full-Stack · <span>IA Appliquée</span></p>
+      <p class="hero-desc">Spécialisée en développement logiciel et intelligence artificielle, avec un intérêt particulier pour les solutions de diagnostic assisté par IA.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-gold">Voir mes projets →</a>
+        <a href="#contact" class="btn-ghost">Me contacter</a>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <img src="Copy of DSC02640 (2) - Copie.JPG" alt="Oumayma Bouyahia portrait">
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hstat"><span class="hstat-n">5+</span><span class="hstat-l">Projets</span></div>
+    <div class="hstat"><span class="hstat-n">3</span><span class="hstat-l">Stages</span></div>
+    <div class="hstat"><span class="hstat-n">IoT</span><span class="hstat-l">Spécialité</span></div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-bar"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="mi"><b>✦</b>IoT Development</span><span class="mi"><b>✦</b>React & Next.js</span><span class="mi"><b>✦</b>Deep Learning</span><span class="mi"><b>✦</b>ESP32 & Raspberry Pi</span><span class="mi"><b>✦</b>Computer Vision</span><span class="mi"><b>✦</b>Flutter</span><span class="mi"><b>✦</b>Node.js</span><span class="mi"><b>✦</b>Freelance disponible</span><span class="mi"><b>✦</b>Spring Boot</span><span class="mi"><b>✦</b>PostgreSQL</span>
+    <span class="mi"><b>✦</b>IoT Development</span><span class="mi"><b>✦</b>React & Next.js</span><span class="mi"><b>✦</b>Deep Learning</span><span class="mi"><b>✦</b>ESP32 & Raspberry Pi</span><span class="mi"><b>✦</b>Computer Vision</span><span class="mi"><b>✦</b>Flutter</span><span class="mi"><b>✦</b>Node.js</span><span class="mi"><b>✦</b>Freelance disponible</span><span class="mi"><b>✦</b>Spring Boot</span><span class="mi"><b>✦</b>PostgreSQL</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="fade-in"><div class="lbl">À propos</div><h2 class="sec-h">Développeuse Full-Stack & IA,<br><em>créatrice d'impact</em></h2></div>
+  <div class="about-g fade-in">
+    <div>
+      <p class="about-p">Étudiante en dernière année de Licence en IoT & Systèmes Embarqués à ENET'Com, passionnée par le développement logiciel et l'intelligence artificielle.</p>
+      <p class="about-p">Ma force est de transformer des problématiques complexes en solutions logicielles intelligentes, en conciliant besoins utilisateurs, performance et innovation.</p>
+      <p class="about-p">Disponible pour missions freelance en Mobile, web full-stack et IA.</p>
+    </div>
+    <div class="skills-wrap">
+      <div class="skill-group">
+        <h3>AI &amp; Machine Learning</h3>
+        <p>Python • TensorFlow • PyTorch • Computer Vision • Deep Learning</p>
+      </div>
+      <div class="skill-group">
+        <h3>Web Development</h3>
+        <p>React.js • Next.js • Node.js • REST APIs</p>
+      </div>
+      <div class="skill-group">
+        <h3>Mobile Development</h3>
+        <p>Flutter • Dart</p>
+      </div>
+      <div class="skill-group">
+        <h3>Databases &amp; Tools</h3>
+        <p>MySQL • MongoDB • Git • Docker</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divl"></div>
+
+<!-- PROJECTS -->
+<section id="projects" style="padding-left:0;padding-right:0;padding-bottom:0;">
+  <div style="padding:0 5rem 3rem;" class="fade-in"><div class="lbl">Portfolio</div><h2 class="sec-h">Projets<br><em>sélectionnés</em></h2></div>
+  <div class="proj-grid fade-in">
+    <div class="pc"><div class="pc-n">01</div><div class="pc-cat">Healthcare · Deep Learning</div><div class="pc-title">Medical Data Collection Platform</div><p class="pc-desc">Plateforme de diagnostic médical au CHU Sfax avec segmentation IA. Modèles YOLO et EfficientNet déployés en production.</p><div class="pc-tags"><span class="tg">React</span><span class="tg">Supabase</span><span class="tg">YOLO</span></div><a href="https://diagnostic-five.vercel.app/login" class="pc-a" target="_blank">Voir le projet →</a></div>
+    <div class="pc"><div class="pc-n">02</div><div class="pc-cat">Web Development · Aerospace Club</div><div class="pc-title">Website Aero</div><p class="pc-desc">Développement d’un site web pour le club aéronautique, présentant ses activités, événements et initiatives.</p><div class="pc-tags"><span class="tg">React</span><span class="tg">TypeScript</span><span class="tg">Vite</span><span class="tg">CSS</span></div><a href="https://websiteaero.vercel.app/" class="pc-a" target="_blank">Voir le site →</a> <a href="https://github.com/oumaym2003/websiteaero" class="pc-a" target="_blank" style="margin-left:1rem;">GitHub →</a></div>
+    <div class="pc"><div class="pc-n">03</div><div class="pc-cat">E-commerce · Parapharmacie</div><div class="pc-title">ParaSanté</div><p class="pc-desc">ParaSanté modernise l'expérience d'achat en parapharmacie grâce à une plateforme intuitive et responsive offrant recherche de produits, gestion du panier et commande simplifiée, tout en répondant aux besoins spécifiques des consommateurs tunisiens.</p><div class="pc-tags"><span class="tg">TypeScript</span><span class="tg">React</span><span class="tg">Tailwind</span><span class="tg">Vite</span></div><a href="https://github.com/oumaym2003/catalogue-para-sent-" class="pc-a" target="_blank">Voir sur GitHub →</a></div>
+    <div class="pc"><div class="pc-n">04</div><div class="pc-cat">Healthcare · Booking</div><div class="pc-title">MediBook</div><p class="pc-desc">MediBook est une solution numérique conçue pour moderniser la prise de rendez-vous médicaux. Développée avec React et Node.js, elle offre une expérience fluide aux patients tout en facilitant la gestion des consultations pour les professionnels de santé.</p><div class="pc-tags"><span class="tg">React</span><span class="tg">React Router DOM</span><span class="tg">Node.js</span><span class="tg">Vite</span></div><a href="https://github.com/oumaym2003/Medi-Book" class="pc-a" target="_blank">Voir sur GitHub →</a></div>
+    <div class="pc"><div class="pc-n">05</div><div class="pc-cat">Web Development · Agri-Tech</div><div class="pc-title">Coq and Co — Plateforme Avicole</div><p class="pc-desc">Application complète de gestion avicole développée dans le cadre d'un stage d'été. Conçue avec React, Spring Boot, Node.js et une base de données optimisée, elle facilite le suivi des exploitations, la gestion des données et l'automatisation des processus métier.</p><div class="pc-tags"><span class="tg">React</span><span class="tg">Spring Boot</span><span class="tg">Node.js</span><span class="tg">Python</span><span class="tg">MySQL</span><span class="tg">REST APIs</span><span class="tg">JSON</span></div><a href="https://github.com/oumaym2003" class="pc-a" target="_blank">Voir GitHub →</a></div>
+    <div class="pc"><div class="pc-n">06</div><div class="pc-cat">Computer Vision · IA</div><div class="pc-title">Web Attendance System</div><p class="pc-desc">Présence automatisée par reconnaissance faciale en temps réel. Précision élevée, interface web déployée en environnement réel.</p><div class="pc-tags"><span class="tg">Python</span><span class="tg">Face Recognition</span><span class="tg">Flask</span></div><a href="https://github.com/oumaym2003/web-attendeance.git" class="pc-a" target="_blank">Voir sur GitHub →</a></div>
+  </div>
+</section>
+
+<div class="divl"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="fade-in"><div class="lbl">Expérience</div><h2 class="sec-h">Parcours<br><em>professionnel</em></h2></div>
+  <div class="exp-list fade-in">
+    <div class="ei"><div class="ei-yr">2025 — 2026</div><div><div class="ei-role">Stage PFE — Aide au Diagnostic Médical</div><div class="ei-co">Habib Bourguiba Sfax · ENET'Com</div><p class="ei-desc">Conception et développement d'une solution intelligente d'aide au diagnostic des maladies de l'oreille moyenne à partir d'images otoscopiques. Le projet s'appuie sur des modèles avancés de Deep Learning, notamment YOLO pour la détection des régions d'intérêt et ConvNeXt pour la classification de 13 pathologies. La solution a été intégrée et déployée sur la plateforme OtoscanAI, accessible via des applications web et mobiles, afin de fournir un outil d'aide à la décision destiné aux professionnels de santé.</p></div></div>
+    <div class="ei"><div class="ei-yr">2024 — 2025</div><div><div class="ei-role">Stage Technique — Plateforme Coq and Co</div><div class="ei-co">Expert Tech Consulting</div><p class="ei-desc">Participation au développement d'une plateforme web de gestion d'exploitations avicoles, couvrant la conception front-end et back-end. Mise en œuvre d'une architecture full-stack basée sur React, Spring Boot et Node.js, avec intégration d'une base de données optimisée et échange de données via des services REST et le format JSON.</p></div></div>
+    <div class="ei"><div class="ei-yr">2023 — 2024</div><div><div class="ei-role">Stage Technique — Drone Robotisé</div><div class="ei-co">TN Smart IoT</div><p class="ei-desc">Conception d'un drone pour l'entretien autonome de panneaux solaires. Contrôle/commande embarqué avec ESP32, Raspberry Pi et BetaFlight.</p></div></div>
+  </div>
+</section>
+
+<div class="divl"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="ct-wrap">
+    <div class="fade-in">
+      <div class="lbl">Contact</div>
+      <h2 class="ct-h">Travaillons<br><em>ensemble</em></h2>
+      <div class="avail-tag"><span class="avail-dot"></span>Disponible maintenant</div>
+      <p class="ct-sub">Je suis toujours ouverte aux échanges autour du développement logiciel, de l'intelligence artificielle et des technologies innovantes. Contactez-moi pour discuter de votre projet ou d'une opportunité de collaboration.</p>
+      <a href="mailto:oumayma.bouyahiya@gmail.com" class="btn-gold" style="display:inline-flex;">Envoyer un email →</a>
+    </div>
+    <div class="ct-links fade-in">
+      <a href="mailto:oumayma.bouyahiya@gmail.com" class="cl"><div><div class="cl-lbl">Email</div><div class="cl-val">oumayma.bouyahiya@gmail.com</div></div><span class="cl-arr">↗</span></a>
+      <a href="https://www.linkedin.com/in/oumayma-bouyahiya-318194247/" class="cl" target="_blank"><div><div class="cl-lbl">LinkedIn</div><div class="cl-val">Oumayma Bouyahiya</div></div><span class="cl-arr">↗</span></a>
+      <a href="https://github.com/oumaym2003" class="cl" target="_blank"><div><div class="cl-lbl">GitHub</div><div class="cl-val">oumaym2003</div></div><span class="cl-arr">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-logo">Oumayma.</div>
+  <span class="ft-copy">© 2026 Oumayma Bouyahia · Tunis, Tunisie</span>
+</footer>
+
+<script>
+// ═══ 3D FLOATING IOT SPHERE (Three.js via CDN) ═══
+(function(){
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+  s.onload = initScene;
+  document.head.appendChild(s);
+})();
+
+function initScene(){
+  const canvas = document.getElementById('hero-canvas');
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setClearColor(0x000000,0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, W/H, 0.1, 100);
+  camera.position.set(4, 1, 5);
+  camera.lookAt(0,0,0);
+
+  // Gold point light
+  const light1 = new THREE.PointLight(0xC8A96E, 3, 15);
+  light1.position.set(3,3,3);
+  scene.add(light1);
+  const light2 = new THREE.PointLight(0x4466ff, 1.5, 10);
+  light2.position.set(-3,-2,2);
+  scene.add(light2);
+  const ambient = new THREE.AmbientLight(0xffffff, 0.15);
+  scene.add(ambient);
+
+  // Main glowing sphere
+  const sphereGeo = new THREE.SphereGeometry(1.5, 64, 64);
+  const sphereMat = new THREE.MeshStandardMaterial({
+    color: 0x0A0A14,
+    metalness: 0.9,
+    roughness: 0.15,
+    emissive: 0x0A0820,
+    emissiveIntensity: 0.3,
+  });
+  const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+  scene.add(sphere);
+
+  // Wireframe ring
+  const ringGeo = new THREE.TorusGeometry(2.2, 0.004, 2, 120);
+  const ringMat = new THREE.MeshBasicMaterial({color: 0xC8A96E, transparent:true, opacity:0.35});
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = Math.PI/2.4;
+  scene.add(ring);
+
+  const ring2Geo = new THREE.TorusGeometry(2.6, 0.003, 2, 120);
+  const ring2 = new THREE.Mesh(ring2Geo, new THREE.MeshBasicMaterial({color:0xC8A96E, transparent:true, opacity:0.15}));
+  ring2.rotation.x = Math.PI/3;
+  ring2.rotation.z = Math.PI/5;
+  scene.add(ring2);
+
+  // Orbiting dots
+  const dotGeo = new THREE.SphereGeometry(0.045, 8, 8);
+  const dotMat = new THREE.MeshBasicMaterial({color:0xE8D5A3});
+  const dots = [];
+  for(let i=0;i<18;i++){
+    const d = new THREE.Mesh(dotGeo, dotMat.clone());
+    const angle = (i/18)*Math.PI*2;
+    d.userData = {angle, r:2.2, speed:0.003+Math.random()*0.004, oy: (Math.random()-0.5)*1.2};
+    dots.push(d);
+    scene.add(d);
+  }
+
+  // Floating particles around sphere
+  const partGeo = new THREE.BufferGeometry();
+  const count = 300;
+  const pos = new Float32Array(count*3);
+  for(let i=0;i<count;i++){
+    const r = 2.5 + Math.random()*2.5;
+    const theta = Math.random()*Math.PI*2;
+    const phi = Math.acos(2*Math.random()-1);
+    pos[i*3] = r*Math.sin(phi)*Math.cos(theta);
+    pos[i*3+1] = r*Math.sin(phi)*Math.sin(theta);
+    pos[i*3+2] = r*Math.cos(phi);
+  }
+  partGeo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  const partMat = new THREE.PointsMaterial({color:0xC8A96E, size:0.022, transparent:true, opacity:0.55});
+  const parts = new THREE.Points(partGeo, partMat);
+  scene.add(parts);
+
+  // Grid plane
+  const gridHelper = new THREE.GridHelper(12, 24, 0xC8A96E, 0xC8A96E);
+  gridHelper.material.transparent = true;
+  gridHelper.material.opacity = 0.04;
+  gridHelper.position.y = -2.5;
+  scene.add(gridHelper);
+
+  let mx=0, my=0;
+  document.addEventListener('mousemove', e=>{
+    mx = (e.clientX/window.innerWidth - 0.5)*2;
+    my = (e.clientY/window.innerHeight - 0.5)*2;
+  });
+
+  let t=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    t += 0.012;
+
+    sphere.rotation.y += 0.003;
+    sphere.rotation.x += 0.001;
+    ring.rotation.z += 0.004;
+    ring2.rotation.y += 0.003;
+    parts.rotation.y += 0.001;
+
+    // Parallax
+    camera.position.x += (mx*1.2 - camera.position.x)*0.04;
+    camera.position.y += (-my*0.8 - camera.position.y + 1)*0.04;
+    camera.lookAt(0,0,0);
+
+    // Light pulse
+    light1.intensity = 2.5 + Math.sin(t*0.8)*0.8;
+
+    // Orbiting dots
+    dots.forEach(d=>{
+      d.userData.angle += d.userData.speed;
+      d.position.x = Math.cos(d.userData.angle) * d.userData.r;
+      d.position.z = Math.sin(d.userData.angle) * d.userData.r * 0.4;
+      d.position.y = d.userData.oy + Math.sin(d.userData.angle*2)*0.3;
+    });
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', ()=>{
+    const W2 = canvas.offsetWidth, H2 = canvas.offsetHeight;
+    camera.aspect = W2/H2;
+    camera.updateProjectionMatrix();
+    renderer.setSize(W2, H2);
+  });
+}
+
+// ═══ SCROLL REVEAL ═══
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); });
+},{threshold:0.1});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+</script>
+</body>
+</html>
