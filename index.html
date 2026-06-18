@@ -481,10 +481,10 @@ footer{padding:2rem 5rem;border-top:1px solid var(--border);display:flex;justify
 
     <img
       class="pc-preview-img"
-      src="MediBook.png"
-      onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+      src="/MediBook.png"
       alt="MediBook preview"
       loading="lazy"
+      onerror="console.error('Image introuvable :', this.src); this.style.display='none'; this.nextElementSibling.style.display='flex';"
     >
 
     <div class="pc-preview-fallback" style="display:none;">
